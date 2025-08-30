@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Layout } from 'antd'; // Import Layout from Ant Design
 import AppHeader from './components/Header';
 import Sidebar from './components/Sidebar';
+import Services from './components/Services';
 
 import './App.css';
 
@@ -40,10 +41,13 @@ function App() {
       <AppHeader />
       <Layout>
         <Sidebar collapsed={collapsed} onCollapse={toggleCollapsed} />
-        <Layout style={{ paddingLeft: collapsed ? '80px' : '200px' }}>
+        <Layout style={{ paddingLeft: collapsed ? '30px' : '200px' }}>
           <Content style={{ padding: '24px', marginTop: '64px' }}>
             {/* Your page content goes here */}
-            <h1>Welcome to the Dashboard</h1>
+            
+
+
+            <Services></Services>
           </Content>
         </Layout>
       </Layout>
