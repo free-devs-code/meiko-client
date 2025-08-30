@@ -1,0 +1,38 @@
+.ant-menu-item-selected {
+  background-color: #0E151A !important; /* Custom background color */
+  color: #009FE4 !important;
+  font-weight: 600 !important; 
+}
+
+.ant-menu-item:hover {
+  background-color: #e6f7ff; /* Optional: Change hover effect */
+}
+
+/* Targeting the icon within a Menu.Item */
+.ant-menu-item .ant-menu-item-icon {
+  margin-right: 0px !important;  /* Adjust this to reduce the space */
+  font-size: 25px !important;  /* Control icon size */
+}
+
+/* Targeting the label (text) inside a Menu.Item */
+.ant-menu-item .ant-menu-item-label {
+  margin-left: 0px !important;  /* Remove or adjust space between icon and label */   
+}
+
+.ant-menu-item {
+  padding-left: 20px !important;   /* Reduce padding on the left to bring the icon closer */
+  padding-right: 30px !important;  /* Reduce padding on the right if necessary */
+}
+
+/* Make the icon fill white when inactive */
+.ant-menu-item .ant-menu-item-icon svg {
+  fill: white;           /* Inactive state - white fill */
+  stroke: #000;          /* Outline color (black) */
+  stroke-width: 2px;     /* Outline thickness */
+}
+
+/* Make the icon fill the desired color when active */
+.ant-menu-item-selected .ant-menu-item-icon svg {
+  fill: #1890ff;         /* Active state - change fill color to blue (or any color) */
+  stroke: #1890ff;       /* Optional: change outline color to match the fill */
+}

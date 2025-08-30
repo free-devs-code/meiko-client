@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { Layout } from 'antd'; // Import Layout from Ant Design
+import AppHeader from './components/Header';
+import Sidebar from './components/Sidebar';
+
+import './App.css';
+
+const { Content } = Layout;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [collapsed, setCollapsed] = useState(false);
+
+  // Toggle sidebar collapse state
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  // Detect screen size for automatic sidebar collapse
+  useEffect(() => {
+    const updateWidth = () => {
+      if (window.innerWidth < 768) {
+        setCollapsed(true); // Collapse on small screens
+      } else {
+        setCollapsed(false); // Expand on larger screens
+      }
+    };
+
+    // Add event listener to handle window resize
+    window.addEventListener('resize', updateWidth);
+
+    // Initial check on mount
+    updateWidth();
+
+    // Cleanup on unmount
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Layout style={{ minHeight: '100vh' }}>
+      <AppHeader />
+      <Layout>
+        <Sidebar collapsed={collapsed} onCollapse={toggleCollapsed} />
+        <Layout style={{ paddingLeft: collapsed ? '80px' : '200px' }}>
+          <Content style={{ padding: '24px', marginTop: '64px' }}>
+            {/* Your page content goes here */}
+            <h1>Welcome to the Dashboard</h1>
+          </Content>
+        </Layout>
+      </Layout>
+    </Layout>
+  );
 }
 
-export default App
+export default App;
