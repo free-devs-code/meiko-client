@@ -10,6 +10,12 @@ body {
   font-family: 'Helvetica Neue', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0;
+  background-color: #D9D9D9;
   overflow-x: hidden;
+}
+
+.custom-search .ant-input-search-button {
+  background-color: #009FE4 !important; /* your custom color */
+  border-color: #009FE4 !important;    /* match border */
+  color: #fff !important;              /* text/icon color */
 }
