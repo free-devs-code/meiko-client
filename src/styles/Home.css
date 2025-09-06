@@ -9,39 +9,39 @@
 .home-content {
     margin: 0 !important;
     padding: 0 !important;
-    min-height: 100vh;
-    height: 100vh;
+    min-height: 85vh;
+    height: 85vh;
     background-image: url(/Meiko-Home.webp);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    /* background-attachment: fixed; */
 }
 
 .text-overlay {
     position: absolute;
-    top: 60.73%;
+    top: 54.35%;
     right: -10px;
     transform: translateY(-50%);
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 30px;
+    padding: 30px 50px 30px 50px;
     border-radius: 10px 0 0 10px;
     max-width: 600px;
-    height: 101.5%;
+    height: 85%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .overlay-title {
-    margin: 0 0 15px 0;
+    margin: 50px 25px 25px 0;
     color: #333;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: bold;
 }
 
 .overlay-text {
-    margin: 0;
-    color: #555;
-    font-size: 24px;
+    margin: 0px 25px 25px 0;
+    color: #000000;
+    font-size: 20px;
     line-height: 1.5;
 }
 

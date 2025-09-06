@@ -1,6 +1,7 @@
 import React from "react";
-import { Layout, Col, Row, Button, Badge } from "antd";
-import { ShoppingFilled } from "@ant-design/icons";
+import { Layout, Col, Row } from "antd";
+// import { ShoppingFilled } from "@ant-design/icons";
+import MyBag from './MyBag'
 
 const { Header } = Layout;
 
@@ -25,12 +26,13 @@ const AppHeader: React.FC = () => {
           lg={4}   // Quarter width on large screens (desktop)
           style={{ textAlign: 'right', paddingRight: '40px' }}  // Adjust padding on all screen sizes
         >
-          <Badge count={5} >
+          {/* <Badge count={5} >
             <Button
               type="link"
               icon={<ShoppingFilled style={{ fontSize: '30px', color: '#1F2E36' }} />}
             />
-          </Badge>
+          </Badge> */}
+          <MyBag />
         </Col>
       </Row>
     </Header>
