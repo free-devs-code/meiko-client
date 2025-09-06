@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Row, Col, Card, Typography, ConfigProvider, Input } from 'antd';
 import { FolderOpenOutlined, DownloadOutlined, SearchOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 import '../App.css'
 const { Paragraph } = Typography;
 const { Meta } = Card;
 
 const { Search } = Input;
-
 
 
 const Services: React.FC = () => {
@@ -62,12 +62,12 @@ const Services: React.FC = () => {
             }}
         >
             <div>
-                <Row gutter={24} justify="end" style={{ marginBottom: 30, padding: "30px", marginRight: "30px" }}>
+                <Row gutter={24} justify="end" style={{ marginBottom: 30, padding: "50px", marginRight: "30px" }}>
                     <Search
                         placeholder="Search products"
                         allowClear
                         enterButton={<SearchOutlined />}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) => setSearch(e.target.value)}        
                         size="large"
                         style={{ width: 600, fontSize: '25px' }}
                     />
@@ -86,7 +86,9 @@ const Services: React.FC = () => {
                             }
 
                             actions={[
-                                <FolderOpenOutlined key="setting" style={{color:'#FFF', fontSize: '18px'}}/>,
+                                <Link to={`/services/${index}`}>
+                                    <FolderOpenOutlined key="setting" style={{color:'#FFF', fontSize: '18px'}}/>
+                                </Link>,
                                 <DownloadOutlined key="edit" style={{color:'#FFF', fontSize: '18px'}} />,
                             ]}
                         >                    
