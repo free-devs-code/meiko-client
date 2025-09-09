@@ -21,3 +21,8 @@ export type ServiceData = {
   image: string;
   folders: FolderItem[]; // top-level folders
 };
+
+export type BreadcrumbData = {
+  id: string;
+  label: string;
+};

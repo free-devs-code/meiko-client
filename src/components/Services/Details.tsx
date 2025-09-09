@@ -1,21 +1,31 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { Breadcrumb } from "antd";
+import { Row, Col, Card, Breadcrumb, Typography } from "antd";
+import { FolderOpenFilled, DownloadOutlined } from "@ant-design/icons";
+import Header from "../Header";
+import Sidebar from "../Sidebar";
+
+const { Meta } = Card;
+const { Paragraph } = Typography;
 
 import { servicesData } from "../../data/serviceData";
-import type { FolderItem, ServiceData, FileItem } from "../../types/serviceTypes";
+import type { FolderItem, ServiceData, FileItem, BreadcrumbData } from "../../types/serviceTypes";
 import { useNavigate } from "react-router-dom";
 
 function ServiceDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  type Breadcrumb = {
-    id: string;
-    folderName: string;
+  const [collapsed, setCollapsed] = useState(false);
+
+  // Toggle sidebar collapse state
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
   };
 
-  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
+  const [backHover, setBackHover] = useState(false);
+
+  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbData[]>([]);
 
   const [detailId, setDetailId] = useState<string | null>(null);
 
@@ -64,7 +74,7 @@ function ServiceDetails() {
 
   const handleFolderClick = (folder: FolderItem) => {
     setDetailId(folder.id);
-    setBreadcrumbs((prev) => [...prev, { id: folder.id, folderName: folder.folderName }]);
+    setBreadcrumbs((prev) => [...prev, { id: folder.id, label: folder.folderName }]);
   };
 
   //goes back one breadcrumb previously visited
@@ -90,9 +100,18 @@ function ServiceDetails() {
   }
 
   //adds a new breadcrumb to the list
-  const updateBreadcrumbs = (id: string, folderName: string) => {
-    setBreadcrumbs((prev) => [...prev, { id, folderName }]);
-  }
+  const updateBreadcrumbs = (id: string, label: string) => {
+    setBreadcrumbs((prev) => [...prev, { id, label }]);
+  };
+
+  const getItemLabel = (item: FolderItem | FileItem) =>
+    "fileName" in item ? item.fileName : item.folderName;
+
+  // FOLDER/FILE VIEW
+  const selectedItem = findItemById(
+    service.folders as Array<FolderItem | FileItem>,
+    detailId as string
+  );
 
   // ==== UI Rendering ===
   // when no folder is clicked → show folders
@@ -100,56 +119,131 @@ function ServiceDetails() {
     const counts = countItems(service.folders);
 
     return (
+
       <div>
-        <button onClick={() => navigate("/")}>
-          ⬅ Back to Services
-        </button>
+        <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
+          <Header />
+          <Sidebar collapsed={collapsed} onCollapse={toggleCollapsed} />
+        </div>
 
-        <Breadcrumb
-          style={{ marginBottom: "15px" }}
-          items={[
-            {
-              key: "root",
-              title: (
-                <button
-                  onClick={() => {
-                    setDetailId(null);
-                    setBreadcrumbs([]);
-                  }}
-                  style={{ background: "none", border: "none", color: "blue", cursor: "pointer", }}
-                >
-                  {service.title}
-                </button>
-              ),
-            },
-          ]}
-        />
+        <div style={{
+          marginLeft: collapsed ? '50px' : '225px',
+        }}>
 
-        <h1>{service.title}</h1>
-        <p>{service.description}</p>
-        <img src={service.image} alt={service.title} width="300" />
+          <h1 style={{ marginTop: "80px" }}>{service.title}</h1>
+          <p>{service.description}</p>
+
+          {/* <img src={service.image} alt={service.title} width="300" />
 
         <p>📂 Total Folders: {counts.folderCount}</p>
-        <p>📄 Total Files: {counts.fileCount}</p>
+        <p>📄 Total Files: {counts.fileCount}</p> */}
 
-        {service.folders.map((folder) => (
-          <p key={folder.id}>
-            <button
-              onClick={() => {
-                setDetailId(folder.id);
-                updateBreadcrumbs(folder.id, folder.folderName);
-              }}
-            >
-              {folder.folderName} ({folder.children.length} items)
-            </button>
-          </p>
-        ))}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px", // spacing between button and folder name
+            }}
+          >
+            <button style={
+              {
+                background: backHover ? "#009FE4" : "#047CB1",
+                border: "none",
+                borderRadius: "6px",
+                color: "#FFF",
+                cursor: "pointer",
+                fontSize: "14px",
+                fontWeight: "bold",
+                marginBottom: "15px",
+                marginLeft: "24px",
+                padding: "8px 16px",
+                boxShadow: backHover ? "0px 4px 12px rgba(0, 0, 0, 0.3)" : "none",
+                transition: "all 0.2s ease-in-out",
+              }
+            } 
+            onMouseEnter={() => setBackHover(true)}
+            onMouseLeave={() => setBackHover(false)}
+            onClick={() => navigate("/")}>⬅ Back to Services</button>
+
+            <Breadcrumb
+              style={{ marginBottom: "15px" }}
+              items={[
+                {
+                  key: "root",
+                  title: (
+                    <button
+                      onClick={() => {
+                        setDetailId(null);
+                        setBreadcrumbs([]);
+                      }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "#047CB1",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        marginLeft: "8px",
+                      }}
+                    >
+                      {service.title}
+                    </button>
+                  ),
+                },
+              ]}
+            />
+          </div>
+
+          <Row gutter={[16, 16]} style={{ padding: "20px", marginTop: "20px" }}>
+            {service.folders.map((folder) => (
+              <Col span={6} key={folder.id}>
+                <Card hoverable style={{ background: "#1F2E36", color: "#FFF" }}>
+                  <Meta
+                    title={<div style={{ color: "#FFF", fontWeight: "bold" }}>{folder.folderName}</div>}
+                    description={
+                      <div style={{ color: "#FFF", fontSize: "12px" }}>
+                        {`${folder.children.length} items`}
+                      </div>
+                    }
+                  />
+
+                  {/* Footer row with icons */}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: "12px",
+                      background: "#FFF",
+                      border: "2px solid #1F2E36", // outlined color
+                      borderRadius: "6px",       // optional rounded corners
+                      padding: "6px 12px",       // spacing inside footer
+                      outline: "2px solid white",          // remove default outline
+                    }}
+                  >
+                    <FolderOpenFilled
+                      onClick={() => {
+                        setDetailId(folder.id);
+                        updateBreadcrumbs(folder.id, folder.folderName);
+                      }}
+                      style={{ color: "#009FE4", fontSize: "22px", cursor: "pointer", paddingLeft: "12px" }}
+                    />
+
+                    <DownloadOutlined
+                      style={{ color: "#1F2E36", fontSize: "22px", cursor: "pointer", paddingRight: "12px" }}
+                      onClick={() => console.log("Downloading", folder)}
+                    />
+                  </div>
+                </Card>
+
+              </Col>
+            ))}
+          </Row>
+
+        </div>
       </div>
     );
   }
-
-  // if a folder is clicked → show its contents
-  const selectedItem = findItemById(service.folders as Array<FolderItem | FileItem>, detailId as string);
 
   if (!selectedItem) {
     return <p>Item not found</p>;
@@ -157,80 +251,152 @@ function ServiceDetails() {
 
   return (
     <div>
-      <h1>{service.title}</h1>
+      <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
+        <Header />
+        <Sidebar collapsed={collapsed} onCollapse={toggleCollapsed} />
+      </div>
 
-      <Breadcrumb
-        style={{ marginBottom: "15px" }}
-        items={[
-          {
-            key: "root",
-            title: (
-              <button
-                onClick={() => {
-                  setDetailId(null);
-                  setBreadcrumbs([]);
-                }}
-                style={{ background: "none", border: "none", color: "blue", cursor: "pointer", }}
-              >
-                {service.title}
-              </button>
-            ),
-          },
-          ...breadcrumbs.map((crumb, index) => ({
-            key: crumb.id,
-            title: (
-              <button
-                onClick={() => handleBreadcrumbClick(index)}
-                style={{ background: "none", border: "none", color: "blue", cursor: "pointer", }}
-              >
-                {crumb.folderName}
-              </button>
-            ),
-          })),
-        ]}
-      />
+      <div style={{
+        marginLeft: collapsed ? '50px' : '225px',
+      }}>
+        <h1>{service.title}</h1>
+        <h2>
+          {"folderName" in selectedItem
+            ? selectedItem.folderName
+            : selectedItem.fileName}
+        </h2>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px", // spacing between button and folder name
+          }}
+        >
+          <button style={
+            {
+              background: "none",
+              border: "2px solid #1F2E36",
+              borderRadius: "6px",
+              color: "#1F2E36",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "bold",
+              marginBottom: "15px",
+              marginLeft: "24px",
+            }
+          } onClick={() => navigate("/")}>⬅ Back to Services</button>
+          <Breadcrumb
+            style={{ marginBottom: "15px" }}
+            items={[
+              {
+                key: "root",
+                title: (
+                  <button
+                    onClick={() => {
+                      setDetailId(null);
+                      setBreadcrumbs([]);
+                    }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "#047CB1",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    {service.title}
+                  </button>
+                ),
+              },
+              ...breadcrumbs.map((crumb, index) => ({
+                key: crumb.id,
+                title: (
+                  <button
+                    onClick={() => handleBreadcrumbClick(index)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "#047CB1",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {crumb.label}
+                  </button>
+                ),
+              })),
+            ]}
+          />
+        </div>
 
-      {/* <button onClick={() => { setDetailId(null); goBackBreadcrumbs(); }}>⬅ Back</button> */}
-
-      <h2>{selectedItem
-        ? ("folderName" in selectedItem ? selectedItem.folderName : selectedItem.fileName)
-        : ""}</h2>
-
-      <ul>
         {selectedItem && Array.isArray((selectedItem as any).children) && (selectedItem as any).children.length > 0 ? (
-          // selectedItem.children is Item[] (FolderItem | FileItem)
-          (selectedItem.children as Array<FolderItem | FileItem>).map((child) => {
-            const isFile = "fileName" in child;
-            const childLabel = isFile ? `${child.fileName} (${child.fileSize})` : child.folderName;
+          <Row gutter={[16, 16]} style={{ padding: "20px", marginTop: "20px" }}>
+            {(selectedItem.children as Array<FolderItem | FileItem>).map((child) => {
+              const isFile = "fileName" in child;
+              const childLabel = isFile ? child.fileName : child.folderName;
+              const canEnter =
+                Array.isArray((child as any).children) &&
+                (child as any).children.length > 0;
 
-            // can we navigate into this child? (it has children array with length)
-            const canEnter = Array.isArray((child as any).children) && (child as any).children.length > 0;
+              return (
+                <Col span={6} key={child.id}>
+                  <Card
+                    hoverable
+                    style={{ background: "#1F2E36", color: "#FFF" }}
+                  >
+                    <Meta
+                      title={<div style={{ color: "#FFF" }}>{childLabel}</div>}
+                      description={
+                        <div style={{ color: "#FFF", fontSize: "12px" }}>
+                          {isFile
+                            ? (child as FileItem).fileSize
+                            : `${(child as FolderItem).children?.length || 0} items`}
+                        </div>
+                      }
+                    />
 
-            return (
-              <li key={child.id}>
-                {isFile ? "📄" : "📁"}{" "}
-                <button
-                  onClick={() => {
-                    if (canEnter) {
-                      // go deeper
-                      setDetailId(child.id);
-                      updateBreadcrumbs(child.id, isFile ? child.fileName : child.folderName);
-                    } else {
-                      // leaf file without children => do something (download, open preview...)
-                      // example: console.log('open/download', child);
-                    }
-                  }}
-                >
-                  {childLabel}
-                </button>
-              </li>
-            );
-          })
+                    {/* Footer row with icons */}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "12px",
+                        background: "#FFF",
+                        border: "2px solid #1F2E36", // outlined color
+                        borderRadius: "6px",       // optional rounded corners
+                        padding: "6px 12px",       // spacing inside footer
+                        outline: "2px solid white",          // remove default outline
+                      }}
+                    >
+                      <FolderOpenFilled
+                        style={{ color: "#009FE4", fontSize: "24px", cursor: "pointer", paddingLeft: "12px" }}
+                        onClick={() => {
+                          if (canEnter) {
+                            setDetailId(child.id);
+                            updateBreadcrumbs(child.id, getItemLabel(child));
+                          }
+                        }}
+                      />
+
+                      <DownloadOutlined
+                        style={{ color: "#1F2E36", fontSize: "24px", cursor: "pointer", paddingRight: "12px" }}
+                        onClick={() => console.log("Download/open", child)}
+                      />
+                    </div>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+
         ) : (
           <p>📄 No children available</p>
         )}
-      </ul>
-
+      </div>
     </div>
   );
 }
