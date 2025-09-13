@@ -4,6 +4,7 @@ import { Row, Col, Card, Breadcrumb, Typography, Checkbox, Button } from "antd";
 import { FolderOpenFilled, DownloadOutlined, ShoppingFilled, LeftOutlined } from "@ant-design/icons";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
+import { useBag } from "../../context/BagContextType";
 
 const { Meta } = Card;
 
@@ -32,7 +33,7 @@ function ServiceDetails() {
   const service = servicesData.find((s: ServiceData) => s.id.toString() === id);
 
   //state for selected items to add to bag
-  const [bagItems, setBagItems] = useState<Array<FolderItem | FileItem>>([]);
+  const {bagItems, setBagItems, setIsDrawerOpen} = useBag();
 
   // Collect IDs recursively from folder tree
   const collectAllIds = (nodes: Array<FolderItem | FileItem>): string[] => {
@@ -128,6 +129,35 @@ function ServiceDetails() {
     detailId as string
   );
 
+  const getSelectedItems = (ids: string[]): Array<FolderItem | FileItem> => {
+    return ids
+      .map((id) => findItemById(service.folders as Array<FolderItem | FileItem>, id))
+      .filter((item): item is FolderItem | FileItem => item !== null);
+  };
+
+  const mergeUnique = (prev: Array<FolderItem | FileItem>, newItems: Array<FolderItem | FileItem>) => {
+    const existingIds = new Set(prev.map((item) => item.id));
+    return [...prev, ...newItems.filter((item) => !existingIds.has(item.id))];
+  };
+
+  // Collect all files from a folder or array of nodes
+  const collectAllFiles = (nodes: Array<FolderItem | FileItem>, existingIds = new Set<string>()): FileItem[] => {
+    let files: FileItem[] = [];
+
+    for (const node of nodes) {
+      if ("fileName" in node) {
+        if (!existingIds.has(node.id)) {
+          files.push(node);
+          existingIds.add(node.id);
+        }
+      } else if ("children" in node && Array.isArray(node.children)) {
+        files = files.concat(collectAllFiles(node.children, existingIds));
+      }
+    }
+
+    return files;
+  };
+
   // ==== UI Rendering ===
   // when no folder is clicked → show folders
   if (!detailId) {
@@ -168,6 +198,7 @@ function ServiceDetails() {
                 fontSize: 20,
                 fontWeight: 600,
                 padding: 0,
+                textShadow: "0px 1px 3px rgba(0, 0, 0, 0.3)"
               }}
               onClick={() => navigate("/")}
               type="link"
@@ -181,9 +212,7 @@ function ServiceDetails() {
                   paddingBottom: "2px",
                 }}
               >
-
                 <LeftOutlined /> Back to Services
-
               </span>
             </Button>
           </div>
@@ -256,15 +285,29 @@ function ServiceDetails() {
                   padding: "8px 16px",
                   boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
                 }}
-                onClick={() => {
-                  selectedParentIds.forEach((id) => {
-                    const item = service.folders.find((f) => f.id === id);
-                    if (item) {
-                      console.log("Adding to Bag", item);
-                      // TODO: actual add-to-bag logic
-                    }
-                  });
+               onClick={() => {
+                  // Collect all files from selected parent folders
+                  const itemsToAdd: FolderItem[] = [];
+
+                  service.folders.forEach(folder => {
+                  if (selectedParentIds.includes(folder.id)) {
+                    // Keep the folder structure intact
+                    itemsToAdd.push(folder);
+                  }
+                });
+
+                setBagItems(prev => {
+                  // Prevent duplicates by id
+                  const newItems = itemsToAdd.filter(f => !prev.some(item => item.id === f.id));
+                  const updated = [...prev, ...newItems];
+
+                  localStorage.setItem("bagItems", JSON.stringify(updated));
+                  return updated;
+                });
+
+                setIsDrawerOpen(true);
                 }}
+
               >
                 <ShoppingFilled style={{ fontSize: "16px" }} />
                 Add to Bag Selected ({selectedParentIds.length})
@@ -275,89 +318,118 @@ function ServiceDetails() {
           <Row gutter={[16, 16]} style={{ padding: "20px" }}>
             {service.folders.map((folder) => (
               <Col
-                xs={24}   // full width on extra small screens
-                sm={12}   // 2 cards per row on small screens
-                md={8}    // 3 cards per row on medium screens
-                lg={6}    // 3 cards per row on large screens
-                xl={6}
-                key={folder.id}>
-                <Card
-                  style={{
-                    width: "100%",
-                    maxWidth: "320px",              // optional max
-                    minHeight: "380px",             // uniform card height
-                    display: "flex",
-                    flexDirection: "column",
-                    backgroundColor: '#a1d9f7'
-                  }}
-                  cover={
+              xs={24}
+              sm={12}
+              md={8}
+              lg={6}
+              xl={6}
+              key={folder.id}
+            >
+              <Card
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 20px rgba(0,0,0,0.3)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(0,0,0,0.15)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                }}
+                style={{
+                  width: "100%",
+                  maxWidth: "320px",
+                  minHeight: "380px",
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#0083bb",
+                  position: "relative", // ✅ required for overlay
+                }}
+                cover={
+                  <div style={{ position: "relative" }}>
                     <img
-                      alt="example"
-                      src={folder.image}
-                      style={{
-                        width: "100%",
-                        height: "clamp(180px, 25vw, 260px)", // ✅ min 180px, grows with screen, max 260px
-                        objectFit: "cover",
-                        borderTopLeftRadius: "8px",
-                        borderTopRightRadius: "8px",
-                      }}
-                    />
-                  }
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "8px 12px"
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Checkbox
-                        checked={selectedParentIds.includes(folder.id)}
-                        onChange={() => {
-                          setSelectedParentIds((prev) =>
-                            prev.includes(folder.id)
-                              ? prev.filter((id) => id !== folder.id)
-                              : [...prev, folder.id]
-                          );
-                        }}
-                        style={{ marginRight: "8px" }}
-                      />
-                      <span style={{ fontWeight: "bold", color: "#1F2E36", flex: 1, textAlign: "left" }}>
-                        {folder.folderName}
-                      </span>
-                    </div>
-                    <span style={{ fontSize: "14px", color: "#555" }}>{folder.items} asdasdasd</span>
-                  </div>
-
-                  {/* Footer row with icons */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: "12px",
-                      borderRadius: "6px",
-                      padding: "6px 12px", 
-                    }}
-                  >
-                    <FolderOpenFilled
                       onClick={() => {
                         setDetailId(folder.id);
                         updateBreadcrumbs(folder.id, folder.folderName);
                       }}
-                      style={{ color: "#1F2E36", fontSize: "22px", cursor: "pointer", paddingLeft: "8px" }}
+                      alt="example"
+                      src={folder.image}
+                      style={{
+                        width: "100%",
+                        height: "clamp(180px, 25vw, 260px)",
+                        objectFit: "cover",
+                        borderTopLeftRadius: "8px",
+                        borderTopRightRadius: "8px",
+                        cursor: "pointer",
+                      }}
                     />
-
+                    {/* ✅ Overlay download button */}
                     <DownloadOutlined
-                      onClick={() => console.log("Download/open", folder)}
-                      style={{ color: "#1F2E36", fontSize: "22px", cursor: "pointer", paddingRight: "8px" }}
+                      onClick={() => {
+                        setSelectedParentIds((prev) =>
+                          prev.includes(folder.id)
+                            ? prev.filter((id) => id !== folder.id)
+                            : [...prev, folder.id]
+                        );
+                      }}
+                      style={{
+                        position: "absolute",
+                        bottom: "8px",
+                        right: "8px",
+                        fontSize: "24px",
+                        color: "#fff",
+                        backgroundColor: "rgba(0,0,0,0.6)",
+                        padding: "6px",
+                        borderRadius: "50%",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                      }}
+                      onMouseEnter={(e) =>
+                        ((e.currentTarget as HTMLElement).style.backgroundColor =
+                          "rgba(0,0,0,0.8)")
+                      }
+                      onMouseLeave={(e) =>
+                        ((e.currentTarget as HTMLElement).style.backgroundColor =
+                          "rgba(0,0,0,0.6)")
+                      }
                     />
                   </div>
-                </Card>
-
-              </Col>
+                }
+              >
+                {/* Card content */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "8px 12px",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Checkbox
+                      checked={selectedParentIds.includes(folder.id)}
+                      onChange={() => {
+                        setSelectedParentIds((prev) =>
+                          prev.includes(folder.id)
+                            ? prev.filter((id) => id !== folder.id)
+                            : [...prev, folder.id]
+                        );
+                      }}
+                      style={{ marginRight: "8px" }}
+                    />
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "#FFF",
+                        flex: 1,
+                        textAlign: "left",
+                      }}
+                    >
+                      {folder.folderName}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: "14px", color: "#FFF" }}>{folder.items}</span>
+                </div>
+              </Card>
+            </Col>
             ))}
           </Row>
 
@@ -380,50 +452,80 @@ function ServiceDetails() {
       <div style={{
         marginLeft: collapsed ? '50px' : '225px',
       }}>
-        <h1>{service.title}</h1>
-        <h2>
-          {"folderName" in selectedItem
+        <h1 style={{ marginTop: 120, textTransform: "uppercase", fontWeight: 600, fontSize: '3rem', letterSpacing: 0.9 }}>{"folderName" in selectedItem
             ? selectedItem.folderName
-            : selectedItem.fileName}
-        </h2>
-        <div
-          style={{
-            display: "flex", alignItems: "center", gap: "12px",
-          }}
-        >
-          <button style={
-            {
-              background: backHover ? "#009FE4" : "#047CB1", border: "none", borderRadius: "6px", color: "#FFF",
-              cursor: "pointer", fontSize: "14px", fontWeight: "bold", marginBottom: "15px", marginLeft: "24px",
-              padding: "8px 16px", boxShadow: backHover ? "0px 4px 12px rgba(0, 0, 0, 0.3)" : "none", transition: "all 0.2s ease-in-out",
-            }
-          } onClick={() => navigate("/")}>⬅ Back to Services</button>
-          <Breadcrumb
-            style={{ marginBottom: "15px" }}
-            items={[
-              {
-                key: "root",
-                title: (
-                  <button
-                    onClick={() => {
-                      setDetailId(null);
-                      setBreadcrumbs([]);
-                    }}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "#047CB1",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                      marginLeft: "8px",
-                    }}
-                  >
-                    {service.title}
-                  </button>
-                ),
-              },
-              ...breadcrumbs.map((crumb, index) => ({
+            : selectedItem.fileName}</h1>
+       
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              paddingRight: "150px",
+              marginBottom: "15px",
+            }}
+          >
+            <Button
+              style={{
+                color: "#009FE4",
+                cursor: "pointer",
+                fontSize: 20,
+                fontWeight: 600,
+                padding: 0,
+                textShadow: "0px 1px 3px rgba(0, 0, 0, 0.3)"
+              }}
+              onClick={() => navigate("/")}
+              type="link"
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  borderBottom: "1px solid #009FE4",
+                  paddingBottom: "2px",
+                }}
+              >
+
+                <LeftOutlined /> Back to Services
+
+              </span>
+            </Button>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
+            <Breadcrumb
+              style={{ marginBottom: "15px" }}
+              items={[
+                {
+                  key: "root",
+                  title: (
+                    <button
+                      onClick={() => {
+                        setDetailId(null);
+                        setBreadcrumbs([]);
+                      }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "#047CB1",
+                        cursor: "pointer",
+                        fontSize: '1.2rem',
+                        fontWeight: "bold",
+                        marginLeft: "20px",
+                      }}
+                    >
+                      {service.title}
+                    </button>
+                  ),
+                },
+                ...breadcrumbs.map((crumb, index) => ({
                 key: crumb.id,
                 title: (
                   <button
@@ -433,7 +535,7 @@ function ServiceDetails() {
                       border: "none",
                       color: "#047CB1",
                       cursor: "pointer",
-                      fontSize: "14px",
+                      fontSize: "20px",
                       fontWeight: "bold",
                     }}
                   >
@@ -441,9 +543,9 @@ function ServiceDetails() {
                   </button>
                 ),
               })),
-            ]}
-          />
-        </div>
+              ]}
+            />
+          </div>
 
         {selectedItem && Array.isArray((selectedItem as any).children) && (selectedItem as any).children.length > 0 ? (
           <div style={{ padding: "20px" }}>
@@ -466,7 +568,7 @@ function ServiceDetails() {
                       : []
                   );
                 }}
-                style={{ marginBottom: "18px", marginLeft: "6px", marginTop: "-14px" }}
+                style={{ marginBottom: "18px", marginLeft: "6px", marginTop: "-14px", fontSize: 15 }}
               >
                 Select All (from this folder)
               </Checkbox>
@@ -488,17 +590,64 @@ function ServiceDetails() {
                       padding: "8px 16px",
                       boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
                     }}
-                    onClick={() => {
-                      selectedChildIds.forEach((id) => {
-                        const item = (selectedItem.children as Array<FolderItem | FileItem>).find(
-                          (child) => child.id === id
-                        );
-                        if (item) {
-                          console.log("Adding to Bag", item);
-                          // TODO: actual add-to-bag logic
-                        }
-                      });
-                    }}
+                      onClick={() => {
+                          const itemsToAdd: FolderItem[] = [];
+
+                          if (detailId) {
+                            const parentFolder = findItemById(service.folders, detailId) as FolderItem;
+                            if (parentFolder) {
+                              // Only include selected children
+                              const selectedChildren = parentFolder.children.filter(child => selectedChildIds.includes(child.id));
+
+                              // Clone the parent folder but only with selected children
+                              itemsToAdd.push({
+                                ...parentFolder,
+                                children: selectedChildren
+                              });
+                            }
+                          }
+
+                          setBagItems(prev => {
+  if (!detailId) return prev;
+
+  // Find parent folder
+  const parentFolder = findItemById(service.folders, detailId) as FolderItem;
+  if (!parentFolder) return prev;
+
+  // Only include selected children
+  const childrenToAdd = parentFolder.children.filter(child => selectedChildIds.includes(child.id));
+
+  // Clone parent folder with only selected children
+  const folderToAdd: FolderItem = {
+    ...parentFolder,
+    children: childrenToAdd
+  };
+
+  // Merge with existing bag
+  const existingIndex = prev.findIndex(item => item.id === folderToAdd.id);
+
+  let updated;
+  if (existingIndex >= 0) {
+    const existingFolder = prev[existingIndex] as FolderItem;
+
+    // Merge children, avoiding duplicates
+    const mergedChildren = [
+      ...existingFolder.children.filter(c => !childrenToAdd.some(sc => sc.id === c.id)),
+      ...childrenToAdd
+    ];
+
+    updated = [...prev];
+    updated[existingIndex] = { ...existingFolder, children: mergedChildren };
+  } else {
+    updated = [...prev, folderToAdd];
+  }
+
+  localStorage.setItem("bagItems", JSON.stringify(updated));
+  return updated;
+});
+
+                          setIsDrawerOpen(true);
+                      }}
                   >
                     <ShoppingFilled style={{ fontSize: "16px" }} />
                     Add to Bag Selected ({selectedChildIds.length})
@@ -507,79 +656,142 @@ function ServiceDetails() {
               </div>
 
             </div>
-            <Row gutter={[16, 16]}>
-              {(selectedItem.children as Array<FolderItem | FileItem>).map((child) => {
+            
+
+            <Row gutter={[16, 16]} style={{ padding: "20px" }}>
+            {(selectedItem.children as Array<FolderItem | FileItem>).map((child) => {
                 const isFile = "fileName" in child;
                 const childLabel = isFile ? child.fileName : child.folderName;
+                const childImage = isFile ? child.image : child.image;
+                const childCount = isFile ? child.fileSize : child.items;
                 const canEnter =
                   Array.isArray((child as any).children) &&
                   (child as any).children.length > 0;
 
                 return (
-                  <Col span={6} key={child.id}>
-                    <Card hoverable style={{ background: "#1F2E36", color: "#FFF" }}>
-
-                      {/* Child Checkbox */}
-                      <Checkbox
-                        checked={selectedChildIds.includes(child.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedChildIds([...selectedChildIds, child.id]);
-                          } else {
-                            setSelectedChildIds(selectedChildIds.filter((id) => id !== child.id));
-                          }
-                        }}
-                        style={{ display: "flex", justifyContent: "flex-start", marginBottom: "8px", color: "#FFF" }}
-                      >
-                        <span style={{ color: "#FFF", fontWeight: "bold" }}>
-                          {childLabel} qwewqe
-                        </span>
-                      </Checkbox>
-
-                      <Meta
-                        description={
-                          <div style={{ color: "#FFF", fontSize: "12px" }}>
-                            {isFile
-                              ? (child as FileItem).fileSize
-                              : `${(child as FolderItem).children?.length || 0} items`}
-                          </div>
-                        }
-                      />
-
-                      {/* Footer row with icons */}
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          marginTop: "12px",
-                          background: "#FFF",
-                          border: "2px solid #1F2E36",
-                          borderRadius: "6px",
-                          padding: "6px 12px",
-                        }}
-                      >
-                        <FolderOpenFilled
-                          style={{ color: "#009FE4", fontSize: "24px", cursor: "pointer", paddingLeft: "8px" }}
+                  <Col
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={6}
+                  xl={6}
+                  key={child.id}
+                >
+                  <Card
+                    
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.boxShadow =
+                        "0 8px 20px rgba(0,0,0,0.3)";
+                      (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.boxShadow =
+                        "0 2px 8px rgba(0,0,0,0.15)";
+                      (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                    }}
+                    style={{
+                      width: "100%",
+                      maxWidth: "320px",
+                      minHeight: "380px",
+                      display: "flex",
+                      flexDirection: "column",
+                      backgroundColor: "#0083bb",
+                      position: "relative", // ✅ required for overlay
+                    }}
+                    cover={
+                      <div style={{ position: "relative" }}>
+                        <img
                           onClick={() => {
-                            if (canEnter) {
-                              setDetailId(child.id);
-                              updateBreadcrumbs(child.id, getItemLabel(child));
-                              setSelectedChildIds([]); // reset when navigating deeper
-                            }
+                            setDetailId(child.id);
+                            updateBreadcrumbs(child.id, childLabel);
+                          }}
+                          alt="example"
+                          src={childImage}
+                          style={{
+                            width: "100%",
+                            height: "clamp(180px, 25vw, 260px)",
+                            objectFit: "cover",
+                            borderTopLeftRadius: "8px",
+                            borderTopRightRadius: "8px",
+                            cursor: "pointer",
                           }}
                         />
-
+                        {/* ✅ Overlay download button */}
                         <DownloadOutlined
-                          style={{ color: "#1F2E36", fontSize: "24px", cursor: "pointer", paddingRight: "8px" }}
-                          onClick={() => console.log("Download/open", child)}
+                          onClick={() => {
+                            if (selectedChildIds.includes(child.id)) {
+                              // ✅ remove if already selected
+                              setSelectedChildIds(selectedChildIds.filter((id) => id !== child.id));
+                            } else {
+                              // ✅ add if not selected
+                              setSelectedChildIds([...selectedChildIds, child.id]);
+                            }
+                          }}
+                          style={{
+                            position: "absolute",
+                            bottom: "8px",
+                            right: "8px",
+                            fontSize: "24px",
+                            color: "#fff",
+                            backgroundColor: "rgba(0,0,0,0.6)",
+                            padding: "6px",
+                            borderRadius: "50%",
+                            cursor: "pointer",
+                            transition: "all 0.3s ease",
+                          }}
+                          onMouseEnter={(e) =>
+                            ((e.currentTarget as HTMLElement).style.backgroundColor =
+                              "rgba(0,0,0,0.8)")
+                          }
+                          onMouseLeave={(e) =>
+                            ((e.currentTarget as HTMLElement).style.backgroundColor =
+                              "rgba(0,0,0,0.6)")
+                          }
                         />
                       </div>
-                    </Card>
-                  </Col>
-                );
+                    }
+                  >
+                    {/* Card content */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "8px 12px",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Checkbox
+                          checked={selectedChildIds.includes(child.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedChildIds([...selectedChildIds, child.id]);
+                            } else {
+                              setSelectedChildIds(selectedChildIds.filter((id) => id !== child.id));
+                            }
+                          }}
+                        style={{ display: "flex", marginRight: "8px", justifyContent: "flex-start", marginBottom: "8px", color: "#FFF" }}
+                        />
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            color: "#FFF",
+                            flex: 1,
+                            textAlign: "left",
+                          }}
+                        >
+                          {childLabel}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: "14px", color: "#FFF" }}>{childCount}</span>
+                    </div>
+                  </Card>
+                </Col>
+              
+                 );
               })}
-            </Row>
+              </Row>
+
           </div>
         ) : (
           <p>📄 No children available</p>

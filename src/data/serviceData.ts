@@ -18,33 +18,39 @@ export const servicesData: ServiceData[] = [
         children: [
           {
             id: "1.1.1",
-            fileName: "Spec Sheet Volume 1.pdf",
-            fileSize: "2.5MB",
+            folderName: "Spec Sheet Volume 1",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 2 ,
             children: [
               {
                 id: "1.1.1.1",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                 fileName: "Spec Sheet for Troubleshoot.pdf",
                 fileSize: "2.8MB",
               },
               {
                 id: "1.1.1.2",
-                fileName: "Sheet Forms for Maintenance.pdf",
+                image: "https://cdn2.vectorstock.com/i/1000x1000/70/46/rfa-file-document-icon-vector-24697046.jpg",
+                fileName: "Sheet Forms for Maintenance.rfa",
                 fileSize: "821KB",
               }
             ],
           },
           {
             id: "1.1.2",
-            fileName: "User Guide.pdf",
-            fileSize: "1.2MB",
+            folderName: "User Guides",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 3,
             children: [
               {
                 id: "1.1.2.1",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                 fileName: "User Guide for Troubleshoot.pdf",
                 fileSize: "2.8MB",
               },
               {
                 id: "1.1.2.2",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                 fileName: "User Guide for Maintenance.pdf",
                 fileSize: "821KB",
               },
@@ -52,15 +58,18 @@ export const servicesData: ServiceData[] = [
                 id: "1.1.2.3",
                 fileName: "User Guide for Repair.pdf",
                 fileSize: "2.3MB",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                 children: [
                   {
                     id: "1.1.2.3.1",
+                    image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                     fileName: "User Guide for Repair - Volume 1.pdf",
                     fileSize: "3.12MB",
                   },
                   {
                     id: "1.1.2.3.2",
                     fileName: "User Guide for Repair - Volume 2.pdf",
+                    image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                     fileSize: "1.93MB",
                   }
                 ]
@@ -69,47 +78,56 @@ export const servicesData: ServiceData[] = [
           },
           {
             id: "1.1.3",
-            fileName: "Service Manual.pdf",
-            fileSize: "1.8MB",
+            folderName: "Service Manuals",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 3,
             children: [
               {
                 id: "1.1.3.1",
                 fileName: "Service Manual for Troubleshoot.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                 fileSize: "2.8MB",
                 children: [
                   {
                     id: "1.1.3.1.1",
                     fileName: "Sample Testing.pdf",
+                    image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                     fileSize: "396KB",
                     children: [
                       {
                         id: "1.1.3.1.1.1",
-                        fileName: "Dishwashing Sample for Errors.pdf",
+                        fileName: "Dishwashing Sample for Errors.rfa",
+                        image: "https://cdn2.vectorstock.com/i/1000x1000/70/46/rfa-file-document-icon-vector-24697046.jpg",
                         fileSize: "452KB",
                       },
                       {
                         id: "1.1.3.1.1.2",
                         fileName: "Machine Sample for Troubleshoot.pdf",
+                        image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                         fileSize: "971KB",
                         children: [
                           {
                             id: " 1.1.3.1.1.2.1",
                             fileName: "Machine Sample for Troubleshoot - Volume 1.pdf",
+                            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                             fileSize: "971KB",
                           },
                           {
                             id: "1.1.3.1.1.2.2",
                             fileName: "Machine Sample for Troubleshoot - Volume 2.pdf",
+                            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                             fileSize: "762KB",
                             children: [
                               {
                                 id: "1.1.3.1.1.2.2.1",
                                 fileName: "Machine Sample for Troubleshoot - Volume 2 - Part 1.pdf",
+                                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                                 fileSize: "890KB",
                               },
                               {
                                 id: "1.1.3.1.1.2.2.2",
                                 fileName: "Machine Sample for Troubleshoot - Volume 2 - Part 2.pdf",
+                                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                                 fileSize: "374KB",
                               }
                             ]
@@ -117,6 +135,7 @@ export const servicesData: ServiceData[] = [
                           {
                             id: "1.1.3.1.1.2.3",
                             fileName: "Machine Sample for Troubleshoot - Volume 3.pdf",
+                            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                             fileSize: "453KB",
                           },
                         ],
@@ -128,21 +147,25 @@ export const servicesData: ServiceData[] = [
               {
                 id: "1.1.3.2",
                 fileName: "Service Manual for Maintenance.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                 fileSize: "721KB",
               },
               {
                 id: "1.1.3.3",
                 fileName: "Service Manual for Repair.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                 fileSize: "1.1MB",
                 children: [
                   {
                     id: "1.1.3.3.1",
                     fileName: "Service Manual for Repair - Volume 1.pdf",
+                    image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                     fileSize: "864KB",
                   },
                   {
                     id: "1.1.3.3.2",
                     fileName: "Service Manual for Repair - Volume 2.pdf",
+                    image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
                     fileSize: "3.8MB",
                   }
                 ],
@@ -160,6 +183,7 @@ export const servicesData: ServiceData[] = [
           {
             id: "1.2.1",
             fileName: "Installation Guide.pdf",
+            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
             fileSize: "1.4MB",
           },
         ],
@@ -173,6 +197,7 @@ export const servicesData: ServiceData[] = [
           {
             id: "1.3.1",
             fileName: "Brochure-Sample.pdf",
+            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
             fileSize: "2.0MB",
           },
         ],
@@ -187,6 +212,7 @@ export const servicesData: ServiceData[] = [
           {
             id: "1.4.1",
             fileName: "Brochure-Sample.pdf",
+            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
             fileSize: "2.0MB",
           },
         ],
@@ -212,6 +238,7 @@ export const servicesData: ServiceData[] = [
           {
             id: "2.1.1",
             fileName: "BioMaster Overview.pdf",
+            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
             fileSize: "3.2MB",
           },
         ],
@@ -236,6 +263,7 @@ export const servicesData: ServiceData[] = [
           {
             id: "3.1.1",
             fileName: "Technical Specs.pdf",
+            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
             fileSize: "2.1MB",
           },
         ],

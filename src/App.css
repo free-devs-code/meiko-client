@@ -20,3 +20,8 @@ body {
   border-color: #009FE4 !important;    /* match border */
   color: #fff !important;              /* text/icon color */
 }
+
+
+.ant-input-search-button {
+  height: 100% !important;
+}

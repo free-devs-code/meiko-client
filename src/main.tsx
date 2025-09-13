@@ -5,15 +5,18 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.tsx'
 import Services from './components/Services.tsx'
 import ServiceDetails from './components/Services/Details.tsx'
+import { BagProvider } from "./context/BagContextType";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/components/Services" element={<Services />} />
-        <Route path="/components/Services/:id" element={<ServiceDetails />} />
-      </Routes>
+      <BagProvider>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/components/Services" element={<Services />} />
+          <Route path="/components/Services/:id" element={<ServiceDetails />} />
+        </Routes>
+      </BagProvider>
     </BrowserRouter>
   </StrictMode>,
 )
