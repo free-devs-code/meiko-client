@@ -156,9 +156,9 @@ function ServiceDetails() {
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-end", // 👈 aligns to the right
+              justifyContent: "flex-end",
               paddingRight: "150px",
-              marginBottom: "15px",       // spacing below if needed
+              marginBottom: "15px",
             }}
           >
             <Button
@@ -167,7 +167,7 @@ function ServiceDetails() {
                 cursor: "pointer",
                 fontSize: 20,
                 fontWeight: 600,
-                padding:  0,
+                padding: 0,
               }}
               onClick={() => navigate("/")}
               type="link"
@@ -177,13 +177,13 @@ function ServiceDetails() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "6px",
-                  borderBottom: "1px solid #009FE4", // 👈 underline across icon + text
+                  borderBottom: "1px solid #009FE4",
                   paddingBottom: "2px",
                 }}
               >
 
-                <LeftOutlined/> Back to Services
-                
+                <LeftOutlined /> Back to Services
+
               </span>
             </Button>
           </div>
@@ -193,7 +193,7 @@ function ServiceDetails() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "12px", // spacing between button and folder name
+              gap: "12px",
             }}
           >
             <Breadcrumb
@@ -274,63 +274,88 @@ function ServiceDetails() {
 
           <Row gutter={[16, 16]} style={{ padding: "20px" }}>
             {service.folders.map((folder) => (
-              <Col 
-                  xs={24}   // full width on extra small screens
-                  sm={12}   // 2 cards per row on small screens
-                  md={8}    // 3 cards per row on medium screens
-                  lg={6}    // 3 cards per row on large screens
-                  xl={6}
-                 key={folder.id}>
+              <Col
+                xs={24}   // full width on extra small screens
+                sm={12}   // 2 cards per row on small screens
+                md={8}    // 3 cards per row on medium screens
+                lg={6}    // 3 cards per row on large screens
+                xl={6}
+                key={folder.id}>
                 <Card
-                    style={{
-                      width: "100%",
-                      maxWidth: "320px",              // optional max
-                      minHeight: "380px",             // uniform card height
-                      display: "flex",
-                      flexDirection: "column"
-                    }}
-                    cover={
-                      <img
-                        alt="example"
-                        src={folder.image}
-                        style={{
-                          width: "100%",
-                          height: "clamp(180px, 25vw, 260px)", // ✅ min 180px, grows with screen, max 260px
-                          objectFit: "cover",        
-                          marginTop: "10px",          // fills card nicely
-                          borderTopLeftRadius: "8px",
-                          borderTopRightRadius: "8px"
-                        }}
-                      />
-                    }
-                  >
-                    <div
+                  style={{
+                    width: "100%",
+                    maxWidth: "320px",              // optional max
+                    minHeight: "380px",             // uniform card height
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: '#a1d9f7'
+                  }}
+                  cover={
+                    <img
+                      alt="example"
+                      src={folder.image}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "8px 12px"
+                        width: "100%",
+                        height: "clamp(180px, 25vw, 260px)", // ✅ min 180px, grows with screen, max 260px
+                        objectFit: "cover",
+                        borderTopLeftRadius: "8px",
+                        borderTopRightRadius: "8px",
                       }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <Checkbox
-                          checked={selectedParentIds.includes(folder.id)}
-                          onChange={() => {
-                            setSelectedParentIds((prev) =>
-                              prev.includes(folder.id)
-                                ? prev.filter((id) => id !== folder.id)
-                                : [...prev, folder.id]
-                            );
-                          }}
-                          style={{ marginRight: "8px" }}
-                        />
-                        <span style={{ fontWeight: "bold", color: "#1F2E36", flex: 1, textAlign: "left" }}>
-                          {folder.folderName}
-                        </span>
-                      </div>
-                       <span style={{ fontSize: "14px", color: "#555" }}>{folder.items}</span>
+                    />
+                  }
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "8px 12px"
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Checkbox
+                        checked={selectedParentIds.includes(folder.id)}
+                        onChange={() => {
+                          setSelectedParentIds((prev) =>
+                            prev.includes(folder.id)
+                              ? prev.filter((id) => id !== folder.id)
+                              : [...prev, folder.id]
+                          );
+                        }}
+                        style={{ marginRight: "8px" }}
+                      />
+                      <span style={{ fontWeight: "bold", color: "#1F2E36", flex: 1, textAlign: "left" }}>
+                        {folder.folderName}
+                      </span>
                     </div>
-                  </Card>
+                    <span style={{ fontSize: "14px", color: "#555" }}>{folder.items} asdasdasd</span>
+                  </div>
+
+                  {/* Footer row with icons */}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: "12px",
+                      borderRadius: "6px",
+                      padding: "6px 12px", 
+                    }}
+                  >
+                    <FolderOpenFilled
+                      onClick={() => {
+                        setDetailId(folder.id);
+                        updateBreadcrumbs(folder.id, folder.folderName);
+                      }}
+                      style={{ color: "#1F2E36", fontSize: "22px", cursor: "pointer", paddingLeft: "8px" }}
+                    />
+
+                    <DownloadOutlined
+                      onClick={() => console.log("Download/open", folder)}
+                      style={{ color: "#1F2E36", fontSize: "22px", cursor: "pointer", paddingRight: "8px" }}
+                    />
+                  </div>
+                </Card>
 
               </Col>
             ))}
