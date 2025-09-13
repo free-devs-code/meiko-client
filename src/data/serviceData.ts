@@ -3,7 +3,7 @@ import type { ServiceData } from "../types/serviceTypes";
 export const servicesData: ServiceData[] = [
   {
     id: 1,
-    title: "Hood Type Dishwashing Machines",
+    title: "Our Dishwashers",
     description:
       "For high volumes of washware, our hood type models keep proving their worth time and again...",
     image:
@@ -11,7 +11,10 @@ export const servicesData: ServiceData[] = [
     folders: [
       {
         id: "1.1",
-        folderName: "Specification Sheets",
+        folderName: "Undercounter dishwashing machines",
+        image: "https://www.meiko.com/fileadmin/_processed_/c/1/csm_untertisch_9cd66aff91.png",
+        items: 30,
+        
         children: [
           {
             id: "1.1.1",
@@ -150,7 +153,9 @@ export const servicesData: ServiceData[] = [
       },
       {
         id: "1.2",
-        folderName: "Installation Manuals",
+        folderName: "Hood Type dishwashing machines",
+        image: "https://www.meiko.com/fileadmin/_processed_/5/7/csm_hauben_01_70272b7678.png", 
+        items: 20,
         children: [
           {
             id: "1.2.1",
@@ -161,7 +166,9 @@ export const servicesData: ServiceData[] = [
       },
       {
         id: "1.3",
-        folderName: "Brochures",
+        folderName: "Utensil Washers",
+        image: "https://www.meiko.com/fileadmin/_processed_/4/a/csm_universal_4b067a9fb2.png", 
+        items: 25,
         children: [
           {
             id: "1.3.1",
@@ -169,7 +176,22 @@ export const servicesData: ServiceData[] = [
             fileSize: "2.0MB",
           },
         ],
+      },
+
+      {
+        id: "1.4",
+        folderName: "Flight Type dishwashing machines",
+        image: "https://www.meiko.com/fileadmin/_processed_/b/a/csm_M-iQ_Bandtransport-Spuelmaschine_16zu9_750f9745b4.jpg", 
+        items: 25,
+        children: [
+          {
+            id: "1.4.1",
+            fileName: "Brochure-Sample.pdf",
+            fileSize: "2.0MB",
+          },
+        ],
       }
+
     ],
   },
 
@@ -184,6 +206,8 @@ export const servicesData: ServiceData[] = [
       {
         id: "2.1",
         folderName: "Brochures",
+        image: "https://www.meiko.com/fileadmin/_processed_/b/a/csm_M-iQ_Bandtransport-Spuelmaschine_16zu9_750f9745b4.jpg",
+        items: 20,
         children: [
           {
             id: "2.1.1",
@@ -206,6 +230,8 @@ export const servicesData: ServiceData[] = [
       {
         id: "3.1",
         folderName: "Technical Documents",
+        image: "https://www.meiko.com/fileadmin/_processed_/d/7/csm_trolley_0cf53c306a.png",
+        items: 12,
         children: [
           {
             id: "3.1.1",
@@ -215,27 +241,5 @@ export const servicesData: ServiceData[] = [
         ],
       },
     ],
-  },
-
-  {
-    id: 4,
-    title: "Utensil Washers",
-    description:
-      "If you need to clean tough dirt and bulky washware, it's time to bring out the big guns...",
-    image:
-      "https://www.meiko.com/fileadmin/_processed_/4/a/csm_universal_4b067a9fb2.png",
-    folders: [
-      {
-        id: "4.1",
-        folderName: "Catalogs",
-        children: [
-          {
-            id: "4.1.1",
-            fileName: "Utensil Washer Catalog.pdf",
-            fileSize: "4.7MB",
-          },
-        ],
-      },
-    ],
-  },
+  }
 ];

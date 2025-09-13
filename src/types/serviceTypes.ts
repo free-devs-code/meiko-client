@@ -9,6 +9,8 @@ export type FileItem = {
 export type FolderItem = {
   id: string;
   folderName: string;
+  image: string;
+  items: number;
   children: Item[]; // folders always have children array
 };
 

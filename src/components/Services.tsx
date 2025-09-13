@@ -29,13 +29,13 @@ const Services: React.FC = () => {
             theme={{
                 components: {
                     Card: {
-                        actionsBg: '#0E151A', // your custom background color
+                        actionsBg: '#a1d9f7', // your custom background color
                     },
                 },
             }}
         >
-            <div>
-                <Row gutter={24} justify="end" style={{ marginBottom: 30, padding: "50px", marginRight: "30px" }}>
+            <div style={{ marginBottom: 100}}>
+                <Row gutter={24} justify="end" style={{ marginBottom: 30, marginTop: 100, padding: "50px", marginRight: "30px" }}>
                     <Search
                         placeholder="Search products"
                         allowClear
@@ -46,11 +46,18 @@ const Services: React.FC = () => {
                     />
                 </Row>
 
-                <Row gutter={[16, 16]} justify="space-between" style={{ padding: '0 20px', marginTop: '30px' }}>
+                <Row gutter={[16, 16]} justify="start" style={{ padding: '0 20px', marginTop: '30px' }}>
                     {filteredData.map((item, index) => (
-                        <Col span={6}>
-                            <Card key={index}
-                                style={{ width: 350, backgroundColor: '#0E151A' }}
+                        <Col 
+                            key={index}
+                            xs={24}   // full width on extra small screens
+                            sm={12}   // 2 cards per row on small screens
+                            md={8}    // 3 cards per row on medium screens
+                            lg={8}    // 3 cards per row on large screens
+                            xl={8}
+                       >
+                            <Card 
+                                style={{ width: '80%', backgroundColor: '#a1d9f7' }}
                                 cover={
                                     <img
                                         alt="example"
@@ -60,19 +67,19 @@ const Services: React.FC = () => {
 
                                 actions={[
                                     <Link to={`components/Services/${item.id}`}>
-                                        <FolderOpenOutlined key="setting" style={{ color: '#FFF', fontSize: '18px' }} />
+                                        <FolderOpenOutlined key="setting" style={{ color: '#000', fontSize: '18px' }} />
                                     </Link>,
-                                    <DownloadOutlined key="edit" style={{ color: '#FFF', fontSize: '18px' }} />,
+                                    <DownloadOutlined key="edit" style={{ color: '#000', fontSize: '18px' }} />,
                                 ]}
                             >
                                 <Meta
-                                    title={<div style={{ textAlign: 'left', fontSize: '15px', letterSpacing: '0.7px', color: '#FFF' }}>{item.title}</div>}
-                                    description={
-                                        <Paragraph style={{ textAlign: 'left', color: '#FFF', letterSpacing: '0.7px' }} ellipsis={{ rows: 2, expandable: false }}>
-                                            {item.description}
-                                        </Paragraph>
+                                    title={<div style={{ textAlign: 'left', fontSize: '1rem', letterSpacing: '0.7px', color: '#000' }}>{item.title}</div>}
+                                    // description={
+                                    //     <Paragraph style={{ textAlign: 'left', color: '#000', letterSpacing: '0.7px' }} ellipsis={{ rows: 2, expandable: false }}>
+                                    //         {item.description}
+                                    //     </Paragraph>
 
-                                    }
+                                    // }
                                 />
 
                             </Card>

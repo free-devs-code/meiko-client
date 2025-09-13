@@ -1,12 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { Row, Col, Card, Breadcrumb, Typography, Checkbox } from "antd";
-import { FolderOpenFilled, DownloadOutlined, ShoppingFilled } from "@ant-design/icons";
+import { Row, Col, Card, Breadcrumb, Typography, Checkbox, Button } from "antd";
+import { FolderOpenFilled, DownloadOutlined, ShoppingFilled, LeftOutlined } from "@ant-design/icons";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
 
 const { Meta } = Card;
-const { Paragraph } = Typography;
 
 import { servicesData } from "../../data/serviceData";
 import type { FolderItem, ServiceData, FileItem, BreadcrumbData } from "../../types/serviceTypes";
@@ -146,13 +145,49 @@ function ServiceDetails() {
           marginLeft: collapsed ? '50px' : '225px',
         }}>
 
-          <h1 style={{ marginTop: "80px" }}>{service.title}</h1>
-          <p>{service.description}</p>
+          <h1 style={{ marginTop: 120, textTransform: "uppercase", fontWeight: 800, fontSize: '4.2rem', letterSpacing: 0.9 }}>{service.title}</h1>
 
           {/* <img src={service.image} alt={service.title} width="300" />
 
         <p>📂 Total Folders: {counts.folderCount}</p>
         <p>📄 Total Files: {counts.fileCount}</p> */}
+
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end", // 👈 aligns to the right
+              paddingRight: "150px",
+              marginBottom: "15px",       // spacing below if needed
+            }}
+          >
+            <Button
+              style={{
+                color: "#009FE4",
+                cursor: "pointer",
+                fontSize: 20,
+                fontWeight: 600,
+                padding:  0,
+              }}
+              onClick={() => navigate("/")}
+              type="link"
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  borderBottom: "1px solid #009FE4", // 👈 underline across icon + text
+                  paddingBottom: "2px",
+                }}
+              >
+
+                <LeftOutlined/> Back to Services
+                
+              </span>
+            </Button>
+          </div>
+
 
           <div
             style={{
@@ -161,26 +196,6 @@ function ServiceDetails() {
               gap: "12px", // spacing between button and folder name
             }}
           >
-            <button style={
-              {
-                background: backHover ? "#009FE4" : "#047CB1",
-                border: "none",
-                borderRadius: "6px",
-                color: "#FFF",
-                cursor: "pointer",
-                fontSize: "14px",
-                fontWeight: "bold",
-                marginBottom: "15px",
-                marginLeft: "24px",
-                padding: "8px 16px",
-                boxShadow: backHover ? "0px 4px 12px rgba(0, 0, 0, 0.3)" : "none",
-                transition: "all 0.2s ease-in-out",
-              }
-            }
-              onMouseEnter={() => setBackHover(true)}
-              onMouseLeave={() => setBackHover(false)}
-              onClick={() => navigate("/")}>⬅ Back to Services</button>
-
             <Breadcrumb
               style={{ marginBottom: "15px" }}
               items={[
@@ -197,9 +212,9 @@ function ServiceDetails() {
                         border: "none",
                         color: "#047CB1",
                         cursor: "pointer",
-                        fontSize: "14px",
+                        fontSize: '1.2rem',
                         fontWeight: "bold",
-                        marginLeft: "8px",
+                        marginLeft: "20px",
                       }}
                     >
                       {service.title}
@@ -220,7 +235,7 @@ function ServiceDetails() {
               onChange={(e) =>
                 setSelectedParentIds(e.target.checked ? service.folders.map((f) => f.id) : [])
               }
-              style={{ marginLeft: "24px", marginTop: "4px" }}
+              style={{ marginLeft: "24px", marginTop: "4px", fontSize: 15 }}
             >
               Select All (from this folder)
             </Checkbox>
@@ -259,18 +274,44 @@ function ServiceDetails() {
 
           <Row gutter={[16, 16]} style={{ padding: "20px" }}>
             {service.folders.map((folder) => (
-              <Col span={6} key={folder.id}>
-                <Card hoverable style={{ background: "#1F2E36", color: "#FFF" }}>
-                  {/* <Meta
-                    title={<div style={{ color: "#FFF", fontWeight: "bold" }}>{folder.folderName}</div>}
-                    description={
-                      <div style={{ color: "#FFF", fontSize: "12px" }}>
-                        {`${folder.children.length} items`}
-                      </div>
+              <Col 
+                  xs={24}   // full width on extra small screens
+                  sm={12}   // 2 cards per row on small screens
+                  md={8}    // 3 cards per row on medium screens
+                  lg={6}    // 3 cards per row on large screens
+                  xl={6}
+                 key={folder.id}>
+                <Card
+                    style={{
+                      width: "100%",
+                      maxWidth: "320px",              // optional max
+                      minHeight: "380px",             // uniform card height
+                      display: "flex",
+                      flexDirection: "column"
+                    }}
+                    cover={
+                      <img
+                        alt="example"
+                        src={folder.image}
+                        style={{
+                          width: "100%",
+                          height: "clamp(180px, 25vw, 260px)", // ✅ min 180px, grows with screen, max 260px
+                          objectFit: "cover",        
+                          marginTop: "10px",          // fills card nicely
+                          borderTopLeftRadius: "8px",
+                          borderTopRightRadius: "8px"
+                        }}
+                      />
                     }
-                  /> */}
-                  <Meta
-                    title={
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "8px 12px"
+                      }}
+                    >
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <Checkbox
                           checked={selectedParentIds.includes(folder.id)}
@@ -283,46 +324,13 @@ function ServiceDetails() {
                           }}
                           style={{ marginRight: "8px" }}
                         />
-                        <span style={{ color: "#FFF", fontWeight: "bold" }}>
+                        <span style={{ fontWeight: "bold", color: "#1F2E36", flex: 1, textAlign: "left" }}>
                           {folder.folderName}
                         </span>
                       </div>
-                    }
-                    description={
-                      <div style={{ color: "#FFF", fontSize: "12px" }}>
-                        {`${folder.children.length} items`}
-                      </div>
-                    }
-                  />
-
-                  {/* Footer row with icons */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: "12px",
-                      background: "#FFF",
-                      border: "2px solid #1F2E36", // outlined color
-                      borderRadius: "6px",       // optional rounded corners
-                      padding: "6px 12px",       // spacing inside footer
-                      outline: "2px solid white",          // remove default outline
-                    }}
-                  >
-                    <FolderOpenFilled
-                      onClick={() => {
-                        setDetailId(folder.id);
-                        updateBreadcrumbs(folder.id, folder.folderName);
-                      }}
-                      style={{ color: "#009FE4", fontSize: "22px", cursor: "pointer", paddingLeft: "8px" }}
-                    />
-
-                    <DownloadOutlined
-                      style={{ color: "#1F2E36", fontSize: "22px", cursor: "pointer", paddingRight: "8px" }}
-                      onClick={() => console.log("Downloading", folder)}
-                    />
-                  </div>
-                </Card>
+                       <span style={{ fontSize: "14px", color: "#555" }}>{folder.items}</span>
+                    </div>
+                  </Card>
 
               </Col>
             ))}
