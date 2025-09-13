@@ -2,6 +2,7 @@
 export type FileItem = {
   id: string;
   fileName: string;
+  image: string;
   fileSize: string;
   children?: Item[]; // optional — some files may have nested docs
 };
@@ -28,3 +29,11 @@ export type BreadcrumbData = {
   id: string;
   label: string;
 };
+
+export type BagContextType = {
+  bagItems: Array<FolderItem | FileItem>;
+  setBagItems: React.Dispatch<React.SetStateAction<Array<FolderItem | FileItem>>>;
+  isDrawerOpen: boolean;
+  setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Card, Typography, ConfigProvider, Input } from 'antd';
+import { Row, Col, Card, Typography, ConfigProvider, Input, Button } from 'antd';
 import { FolderOpenOutlined, DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -29,8 +29,14 @@ const Services: React.FC = () => {
             theme={{
                 components: {
                     Card: {
-                        actionsBg: '#a1d9f7', // your custom background color
+                        actionsBg: '#0083bb', // your custom background color
                     },
+
+                    Button: {
+                        colorPrimary: '#0083bb', // changes background for primary buttons
+                        colorText: '#ffffff',    // optional: changes text color
+                    },
+
                 },
             }}
         >
@@ -39,11 +45,15 @@ const Services: React.FC = () => {
                     <Search
                         placeholder="Search products"
                         allowClear
-                        enterButton={<SearchOutlined />}
+                        enterButton={<Button type="primary" style={{lineHeight: "37px", borderRadius: "0 6px 6px 0"}} icon={<SearchOutlined />} size="large"/>}
                         onChange={(e) => setSearch(e.target.value)}
                         size="large"
-                        style={{ width: 600, fontSize: '25px' }}
-                    />
+                        style={{
+                            width: 600,
+                            fontSize: "25px",
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                        }}
+                        />
                 </Row>
 
                 <Row gutter={[16, 16]} justify="start" style={{ padding: '0 20px', marginTop: '30px' }}>
@@ -57,7 +67,8 @@ const Services: React.FC = () => {
                             xl={8}
                        >
                             <Card 
-                                style={{ width: '80%', backgroundColor: '#a1d9f7' }}
+
+                                style={{ width: '80%', backgroundColor: '#0083bb', boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"  }}
                                 cover={
                                     <img
                                         alt="example"
@@ -67,19 +78,20 @@ const Services: React.FC = () => {
 
                                 actions={[
                                     <Link to={`components/Services/${item.id}`}>
-                                        <FolderOpenOutlined key="setting" style={{ color: '#000', fontSize: '18px' }} />
+                                        <FolderOpenOutlined
+                                         key="setting" style={{ color: '#FFF', fontSize: '18px' }} />
                                     </Link>,
-                                    <DownloadOutlined key="edit" style={{ color: '#000', fontSize: '18px' }} />,
+                                    <DownloadOutlined key="edit" style={{ color: '#FFF', fontSize: '18px' }} />,
                                 ]}
                             >
                                 <Meta
-                                    title={<div style={{ textAlign: 'left', fontSize: '1rem', letterSpacing: '0.7px', color: '#000' }}>{item.title}</div>}
-                                    // description={
-                                    //     <Paragraph style={{ textAlign: 'left', color: '#000', letterSpacing: '0.7px' }} ellipsis={{ rows: 2, expandable: false }}>
-                                    //         {item.description}
-                                    //     </Paragraph>
+                                    title={<div style={{ textAlign: 'left', fontSize: '1rem', letterSpacing: '0.7px', color: '#FFF' }}>{item.title}</div>}
+                                    description={
+                                        <Paragraph style={{ textAlign: 'left', color: '#FFF', letterSpacing: '0.7px' }} ellipsis={{ rows: 2, expandable: false }}>
+                                            {item.description}
+                                        </Paragraph>
 
-                                    // }
+                                    }
                                 />
 
                             </Card>
