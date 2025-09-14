@@ -3,6 +3,7 @@ import { Layout } from 'antd'; // Import Layout from Ant Design
 import AppHeader from './components/Header';
 import Sidebar from './components/Sidebar';
 import Services from './components/Services';
+import Home from './components/Home';
 
 import './App.css';
 
@@ -46,8 +47,8 @@ function App() {
             {/* Your page content goes here */}
             
 
-
-            <Services></Services>
+            <Home sidebarCollapsed={false} />
+            <Services />
           </Content>
         </Layout>
       </Layout>

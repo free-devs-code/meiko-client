@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  font-family: 'Helvetica Neue', sans-serif;
 }
 
 /* src/index.css */
@@ -10,6 +11,21 @@ body {
   font-family: 'Helvetica Neue', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0;
+  background-color: rgba(240, 240, 240, 1);
   overflow-x: hidden;
+}
+
+.custom-search .ant-input-search-button {
+  background-color: #009FE4 !important; /* your custom color */
+  border-color: #009FE4 !important;    /* match border */
+  color: #fff !important;              /* text/icon color */
+}
+
+
+.ant-input-search-button {
+  height: 100% !important;
+}
+
+.ant-notification {
+  z-index: 2001 !important;
 }
