@@ -175,7 +175,7 @@ function ServiceDetails() {
           marginLeft: collapsed ? '50px' : '225px',
         }}>
 
-          <h1 style={{ marginTop: 120, textTransform: "uppercase", fontWeight: 800, fontSize: '4.2rem', letterSpacing: 0.9 }}>{service.title}</h1>
+          <h1 style={{ marginTop: 120, textTransform: "uppercase", fontWeight: service.title.length > 15 ? 600 : 800, fontSize: '4.2rem', letterSpacing: 0.9 }}>{service.title}</h1>
 
           {/* <img src={service.image} alt={service.title} width="300" />
 
@@ -442,6 +442,11 @@ function ServiceDetails() {
     return <p>Item not found</p>;
   }
 
+  const title =
+  "folderName" in selectedItem
+    ? selectedItem.folderName
+    : selectedItem.fileName;
+
   return (
     <div>
       <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
@@ -452,9 +457,7 @@ function ServiceDetails() {
       <div style={{
         marginLeft: collapsed ? '50px' : '225px',
       }}>
-        <h1 style={{ marginTop: 120, textTransform: "uppercase", fontWeight: 600, fontSize: '3rem', letterSpacing: 0.9 }}>{"folderName" in selectedItem
-            ? selectedItem.folderName
-            : selectedItem.fileName}</h1>
+        <h1 style={{ marginTop: 120, textTransform: "uppercase", fontWeight: 600, fontSize: '3rem', letterSpacing: 0.9 }}>{title}</h1>
        
 
           <div
@@ -608,43 +611,43 @@ function ServiceDetails() {
                           }
 
                           setBagItems(prev => {
-  if (!detailId) return prev;
+                          if (!detailId) return prev;
 
-  // Find parent folder
-  const parentFolder = findItemById(service.folders, detailId) as FolderItem;
-  if (!parentFolder) return prev;
+                          // Find parent folder
+                          const parentFolder = findItemById(service.folders, detailId) as FolderItem;
+                          if (!parentFolder) return prev;
 
-  // Only include selected children
-  const childrenToAdd = parentFolder.children.filter(child => selectedChildIds.includes(child.id));
+                          // Only include selected children
+                          const childrenToAdd = parentFolder.children.filter(child => selectedChildIds.includes(child.id));
 
-  // Clone parent folder with only selected children
-  const folderToAdd: FolderItem = {
-    ...parentFolder,
-    children: childrenToAdd
-  };
+                          // Clone parent folder with only selected children
+                          const folderToAdd: FolderItem = {
+                            ...parentFolder,
+                            children: childrenToAdd
+                          };
 
-  // Merge with existing bag
-  const existingIndex = prev.findIndex(item => item.id === folderToAdd.id);
+                            // Merge with existing bag
+                            const existingIndex = prev.findIndex(item => item.id === folderToAdd.id);
 
-  let updated;
-  if (existingIndex >= 0) {
-    const existingFolder = prev[existingIndex] as FolderItem;
+                            let updated;
+                            if (existingIndex >= 0) {
+                              const existingFolder = prev[existingIndex] as FolderItem;
 
-    // Merge children, avoiding duplicates
-    const mergedChildren = [
-      ...existingFolder.children.filter(c => !childrenToAdd.some(sc => sc.id === c.id)),
-      ...childrenToAdd
-    ];
+                              // Merge children, avoiding duplicates
+                              const mergedChildren = [
+                                ...existingFolder.children.filter(c => !childrenToAdd.some(sc => sc.id === c.id)),
+                                ...childrenToAdd
+                              ];
 
-    updated = [...prev];
-    updated[existingIndex] = { ...existingFolder, children: mergedChildren };
-  } else {
-    updated = [...prev, folderToAdd];
-  }
+                              updated = [...prev];
+                              updated[existingIndex] = { ...existingFolder, children: mergedChildren };
+                            } else {
+                              updated = [...prev, folderToAdd];
+                            }
 
-  localStorage.setItem("bagItems", JSON.stringify(updated));
-  return updated;
-});
+                            localStorage.setItem("bagItems", JSON.stringify(updated));
+                            return updated;
+                          });
 
                           setIsDrawerOpen(true);
                       }}
@@ -697,23 +700,34 @@ function ServiceDetails() {
                       flexDirection: "column",
                       backgroundColor: "#0083bb",
                       position: "relative", // ✅ required for overlay
+                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
                     }}
                     cover={
-                      <div style={{ position: "relative" }}>
+                      <div style={{ 
+                        position: "relative",
+                        width: "100%",
+                        height: "clamp(180px, 25vw, 260px)",
+                        borderTopLeftRadius: "8px",
+                        borderTopRightRadius: "8px",
+                        overflow: "hidden",
+                        backgroundColor: "#FFF",
+                        cursor: isFile ? "default" : "pointer",
+                                            
+                        }}>
                         <img
-                          onClick={() => {
-                            setDetailId(child.id);
-                            updateBreadcrumbs(child.id, childLabel);
-                          }}
+                          {...(!isFile && {
+                            onClick: () => {
+                              setDetailId(child.id);
+                              updateBreadcrumbs(child.id, childLabel);
+                            },
+                          })}
                           alt="example"
                           src={childImage}
                           style={{
                             width: "100%",
-                            height: "clamp(180px, 25vw, 260px)",
+                            height: "100%",
                             objectFit: "cover",
-                            borderTopLeftRadius: "8px",
-                            borderTopRightRadius: "8px",
-                            cursor: "pointer",
+                           
                           }}
                         />
                         {/* ✅ Overlay download button */}

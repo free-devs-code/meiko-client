@@ -182,9 +182,25 @@ export const servicesData: ServiceData[] = [
         children: [
           {
             id: "1.2.1",
-            fileName: "Installation Guide.pdf",
-            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
-            fileSize: "1.4MB",
+            folderName: "Installation Guide",
+            items: 2,
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            children: [
+              {
+                id: "1.2.1.1",
+                fileName: "User Guide for Repair.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "1.93MB",
+              },
+
+              {
+                id: "1.2.1.2",
+                fileName: "Overview.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "1.93MB",
+              }
+              
+            ]
           },
         ],
       },
@@ -223,7 +239,7 @@ export const servicesData: ServiceData[] = [
 
   {
     id: 2,
-    title: "MEIKO BioMaster®",
+    title: "Our Food Waste Treatment Systems",
     description:
       "Whether you serve 100 or more than 10,000 covers per day – we have the right solution...",
     image:
@@ -231,8 +247,52 @@ export const servicesData: ServiceData[] = [
     folders: [
       {
         id: "2.1",
-        folderName: "Brochures",
-        image: "https://www.meiko.com/fileadmin/_processed_/b/a/csm_M-iQ_Bandtransport-Spuelmaschine_16zu9_750f9745b4.jpg",
+        folderName: "MEIKO BioMaster®",
+        image: "https://img.nauticexpo.com/images_ne/photo-g/31345-20350889.webp",
+        items: 20,
+        children: [
+          {
+            id: "2.1.1",
+            folderName: "BioMaster Overview",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 3,
+            children: [
+              {
+                id: "2.1.1.1",
+                fileName: "User Guide for Repair - Volume 2.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "1.93MB",
+              },
+              {
+                id: "2.1.1.2",
+                fileName: "User Guide for Repair - Volume 2.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "1.93MB",
+              }
+            ]
+          },
+
+          {
+            id: "2.1.2",
+            folderName: "Specifications",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 2,
+            children: [
+              {
+                id: "2.1.2.1",
+                fileName: "User Guide for Repair - Volume 2.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "1.93MB",
+              }
+            ]
+          },
+        ],
+      },
+
+      {
+        id: "2.2",
+        folderName: "MEIKO WasteStar FC",
+        image: "https://img.nauticexpo.com/images_ne/photo-m2/31345-20350902.jpg",
         items: 20,
         children: [
           {
@@ -248,7 +308,7 @@ export const servicesData: ServiceData[] = [
 
   {
     id: 3,
-    title: "Meiko TopLine",
+    title: "Our Wahser-Disinfectors",
     description:
       "A high-performance washer-disinfector by MEIKO – with integrated drying and cooling...",
     image:
@@ -256,18 +316,93 @@ export const servicesData: ServiceData[] = [
     folders: [
       {
         id: "3.1",
-        folderName: "Technical Documents",
-        image: "https://www.meiko.com/fileadmin/_processed_/d/7/csm_trolley_0cf53c306a.png",
-        items: 12,
+        folderName: "Meiko TopLine",
+        image: "https://www.meiko.com/fileadmin/_processed_/1/d/csm_TopLine-20-Steckbeckenspueler_16zu9_4dbe0f788f.jpg",
+        items: 3,
         children: [
           {
             id: "3.1.1",
-            fileName: "Technical Specs.pdf",
-            image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
-            fileSize: "2.1MB",
-          },
+            folderName: "Specification Sheets",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 3,
+            children: [
+              {
+                id: "3.1.1.1",
+                fileName: "Technical Specs.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "2.1MB",
+              },
+
+              {
+                id: "3.1.1.2",
+                fileName: "Hardware Specs.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "2.1MB",
+              },
+            ],
+          }
         ],
       },
-    ],
+      {
+        id: "3.2",
+        folderName: "Meiko Topic",
+        image: "https://www.meiko.com/fileadmin/_processed_/1/d/csm_TopLine-20-Steckbeckenspueler_16zu9_4dbe0f788f.jpg",
+        items: 3,
+        children: [
+          {
+            id: "3.2.1",
+            folderName: "Specification Sheets",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 3,
+            children: [
+              {
+                id: "3.2.1.1",
+                fileName: "Technical Specs.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "2.1MB",
+              },
+
+              {
+                id: "3.2.1.2",
+                fileName: "Hardware Specs.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "2.1MB",
+              },
+            ],
+          }
+        ],
+      },
+
+      {
+        id: "3.3",
+        folderName: "Meiko TopClean 60",
+        image: "https://www.meiko.com/fileadmin/_processed_/7/c/csm_TopClean60_3_Desinfektionsgeraet_e1138bcf9a.jpg",
+        items: 3,
+        children: [
+          {
+            id: "3.3.1",
+            folderName: "Specification Sheets",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo8JXJtAvmNW4pFVcbB2H_cgM2qWMYd_Vt0mAoQyNNjVwZFmz6EKNw16q0UNEchr9igcE&usqp=CAU",
+            items: 3,
+            children: [
+              {
+                id: "3.3.1.1",
+                fileName: "Technical Specs.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "2.1MB",
+              },
+
+              {
+                id: "3.3.1.2",
+                fileName: "Hardware Specs.pdf",
+                image: "https://t3.ftcdn.net/jpg/03/53/29/04/360_F_353290452_GFcwsP8yZpZSdpAxKTILj0TKd5pN7XfD.jpg",
+                fileSize: "2.1MB",
+              },
+            ],
+          }
+        ],
+      },
+
+    ]
   }
-];
+]
