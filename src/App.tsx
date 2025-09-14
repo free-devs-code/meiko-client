@@ -46,10 +46,12 @@ function App() {
         <Layout style={{ paddingLeft: collapsed ? '30px' : '200px' }}>
           <Content style={{ padding: '24px', marginTop: '64px' }}>
             {/* Your page content goes here */}
-            
+
 
             <Home sidebarCollapsed={false} />
-            <Services />
+            <div id="browse-section">
+              <Services />
+            </div>
           </Content>
           <Footer />
         </Layout>
