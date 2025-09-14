@@ -40,12 +40,12 @@ const Services: React.FC = () => {
                 },
             }}
         >
-            <div style={{ marginBottom: 100}}>
+            <div id="browse-section" style={{ marginBottom: 100 }}>
                 <Row gutter={24} justify="end" style={{ marginBottom: 30, marginTop: 100, padding: "50px", marginRight: "30px" }}>
                     <Search
                         placeholder="Search products"
                         allowClear
-                        enterButton={<Button type="primary" style={{lineHeight: "37px", borderRadius: "0 6px 6px 0"}} icon={<SearchOutlined />} size="large"/>}
+                        enterButton={<Button type="primary" style={{ lineHeight: "37px", borderRadius: "0 6px 6px 0" }} icon={<SearchOutlined />} size="large" />}
                         onChange={(e) => setSearch(e.target.value)}
                         size="large"
                         style={{
@@ -53,53 +53,66 @@ const Services: React.FC = () => {
                             fontSize: "25px",
                             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
                         }}
-                        />
+                    />
                 </Row>
 
                 <Row gutter={[16, 16]} justify="start" style={{ padding: '0 20px', marginTop: '30px' }}>
                     {filteredData.map((item, index) => (
-                        <Col 
+                        <Col
                             key={index}
                             xs={24}   // full width on extra small screens
                             sm={12}   // 2 cards per row on small screens
                             md={8}    // 3 cards per row on medium screens
                             lg={8}    // 3 cards per row on large screens
                             xl={8}
-                       >
-                            <Card 
-
-                                style={{ width: '80%', backgroundColor: '#0083bb', boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"  }}
-                                cover={
-                                    <img
-                                        alt="example"
-                                        src={item.image}
-                                    />
-                                }
-
-                                actions={[
-                                    <Link to={`components/Services/${item.id}`}>
-                                        <FolderOpenOutlined
-                                         key="setting" style={{ color: '#FFF', fontSize: '18px' }} />
-                                    </Link>,
-                                    <DownloadOutlined key="edit" style={{ color: '#FFF', fontSize: '18px' }} />,
-                                ]}
+                        >
+                            <Link
+                                to={`components/Services/${item.id}`}
+                                style={{ textDecoration: "none" }}
                             >
-                                <Meta
-                                    title={<div style={{ textAlign: 'left', fontSize: '1rem', letterSpacing: '0.7px', color: '#FFF' }}>{item.title}</div>}
-                                    description={
-                                        <Paragraph style={{ textAlign: 'left', color: '#FFF', letterSpacing: '0.7px' }} ellipsis={{ rows: 2, expandable: false }}>
-                                            {item.description}
-                                        </Paragraph>
-
+                                <Card
+                                    hoverable
+                                    style={{
+                                        width: "80%",
+                                        backgroundColor: "#0083bb",
+                                        color: "#FFF",
+                                        transition: "all 0.3s ease", // smooth effect
+                                    }}
+                                    cover={
+                                        <img
+                                            alt="example"
+                                            src={item.image}
+                                            style={{ objectFit: "cover" }}
+                                        />
                                     }
-                                />
-
-                            </Card>
+                                    bodyStyle={{ padding: "16px" }}
+                                >
+                                    <div
+                                        style={{
+                                            textAlign: "left",
+                                            fontSize: "1rem",
+                                            letterSpacing: "0.7px",
+                                            color: "#FFF",
+                                            fontWeight: "700",
+                                        }}
+                                    >
+                                        {item.title}
+                                    </div>
+                                    <Paragraph
+                                        style={{
+                                            textAlign: "left",
+                                            color: "#FFF",
+                                            letterSpacing: "0.7px",
+                                            marginTop: "8px",
+                                        }}
+                                        ellipsis={{ rows: 2, expandable: false }}
+                                    >
+                                        {item.description}
+                                    </Paragraph>
+                                </Card>
+                            </Link>
                         </Col>
-
                     ))}
-
-
                 </Row>
             </div>
 

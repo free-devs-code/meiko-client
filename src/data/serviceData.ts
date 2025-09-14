@@ -308,7 +308,7 @@ export const servicesData: ServiceData[] = [
 
   {
     id: 3,
-    title: "Our Wahser-Disinfectors",
+    title: "Our Washer-Disinfectors",
     description:
       "A high-performance washer-disinfector by MEIKO – with integrated drying and cooling...",
     image:

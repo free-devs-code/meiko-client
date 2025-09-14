@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Layout, Menu } from "antd";
 import { HomeOutlined, FolderOpenOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom"; // ✅ import navigate
 
-import '../styles/AppSider.css'
+import "../styles/AppSider.css";
 
 const { Sider } = Layout;
 
@@ -12,20 +13,29 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
-    const [selectedKey, setSelectedKey] = useState('1'); // Default active item
+    const [selectedKey, setSelectedKey] = useState("1");
+    const navigate = useNavigate(); // ✅ hook for navigation
 
-    // Function to handle menu item click
     const handleMenuClick = (e: any) => {
         setSelectedKey(e.key);
 
         if (e.key === "1") {
-            // Scroll to top (Home)
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            navigate("/"); // ✅ always go Home
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }, 100);
         } else if (e.key === "2") {
-            // Scroll to Browse section
-            const browseSection = document.getElementById("browse-section");
-            if (browseSection) {
-                browseSection.scrollIntoView({ behavior: "smooth" });
+            if (window.location.pathname !== "/") {
+                navigate("/"); // ✅ go to Home page first
+                setTimeout(() => {
+                    document
+                        .getElementById("browse-section")
+                        ?.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+            } else {
+                document
+                    .getElementById("browse-section")
+                    ?.scrollIntoView({ behavior: "smooth" });
             }
         }
     };
