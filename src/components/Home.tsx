@@ -28,15 +28,16 @@ const Home: React.FC<HomeProps> = ({ sidebarCollapsed }) => {
         <Layout className={`home-layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
             <Content className="home-content">
                 <Row>
-                    <Col span={8}></Col>
-                    <Col span={8}></Col>
-                    <Col span={8} style={contentStyle}>
-                        <h2 className="overlay-title">
-                            Welcome to the ultimate resource Meiko Brand Guidelines
-                        </h2>
-                        <p className="overlay-text">
-                            Here you will find our comprehensive brand guidelines, detailing the fundamental principles that define our brand, along with specific instructions on how to use our logos, color palettes, and typography. This hub also provides detailed rules for all of our communication media, including brochures, user interfaces, and social media. You don't need to register to access these guidelines. We encourage you to browse the sections to ensure your work accurately reflects our brand's consistent, trustworthy, and recognizable presence
-                        </p>
+                    <Col span={14} lg={14} md={14} sm={0} xs={0}></Col>
+                    <Col span={10} lg={10} md={10} sm={24} xs={24} style={contentStyle}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <p className="overlay-title">
+                                Welcome to the ultimate resource Meiko Brand Guidelines
+                                <p className="overlay-text">
+                                    Here you will find our comprehensive brand guidelines, detailing the fundamental principles that define our brand, along with specific instructions on how to use our logos, color palettes, and typography. This hub also provides detailed rules for all of our communication media, including brochures, user interfaces, and social media. You don't need to register to access these guidelines. We encourage you to browse the sections to ensure your work accurately reflects our brand's consistent, trustworthy, and recognizable presence
+                                </p>
+                            </p>
+                        </div>
                     </Col>
                 </Row>
             </Content>
