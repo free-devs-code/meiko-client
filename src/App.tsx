@@ -4,6 +4,7 @@ import AppHeader from './components/Header';
 import Sidebar from './components/Sidebar';
 import Services from './components/Services';
 import Home from './components/Home';
+import Footer from "./components/Footer";
 
 import './App.css';
 
@@ -50,6 +51,7 @@ function App() {
             <Home sidebarCollapsed={false} />
             <Services />
           </Content>
+          <Footer />
         </Layout>
       </Layout>
     </Layout>
